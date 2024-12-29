@@ -47,27 +47,28 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2  # Step to checkout your code from the GitHub repository
+      uses: actions/checkout@v2  # Checkout your code from the GitHub repository
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-access-key-id: ${ secrets.AWS_ACCESS_KEY_ID }
-        aws-secret-access-key: ${ secrets.AWS_SECRET_ACCESS_KEY }
-        aws-region: ap-southeast-1  # The AWS region where your ECR is hosted
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-southeast-1  # Replace with your AWS region
 
     - name: Login to Amazon ECR
       id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1  # Login to your Amazon ECR
+      uses: aws-actions/amazon-ecr-login@v1  # Login to Amazon ECR
 
     - name: Build and tag Docker image
       run: |
-        docker build -t django-sample-app:latest .  # Build Docker image from the project
+        docker build -t django-sample-app:latest .  # Build Docker image
         docker tag django-sample-app:latest 637423378523.dkr.ecr.ap-southeast-1.amazonaws.com/django/sample:latest  # Tag the image for ECR
 
     - name: Push Docker image to Amazon ECR
       run: |
         docker push 637423378523.dkr.ecr.ap-southeast-1.amazonaws.com/django/sample:latest  # Push the image to ECR
+
 
   # deploy:
   #   runs-on: ubuntu-latest
